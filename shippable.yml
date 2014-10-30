@@ -1,0 +1,26 @@
+language: php
+
+php:
+  - 5.5
+  - 5.6
+  - hhvm
+
+  # only build when certain Git branches are updated
+branches:
+  only:
+    - master
+
+env:
+  - APP_ENV=testing
+
+before_script:
+ - npm install -g gulp
+ - npm install
+ - composer install --no-interaction --dev
+
+script:
+ - phpunit
+ - gulp
+
+notifications:
+  email: true
