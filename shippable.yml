@@ -17,7 +17,7 @@ env:
   - APP_ENV=testing
 
 before_script:
- - npm install gulp
+ - sudo npm install -g gulp
  - npm install
  - composer install --no-interaction --dev
 
