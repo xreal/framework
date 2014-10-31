@@ -17,7 +17,7 @@ env:
     - EB_TOOLS_DIR=/tmp/eb_tools EB_VERSION=AWS-ElasticBeanstalk-CLI-2.6.3
     - EB_TOOLS=$EB_TOOLS_DIR/$EB_VERSION
     - RDS_HOSTNAME=127.0.0.1 RDS_USERNAME=ap2test RDS_PASSWORD="a.2XFRhwm8uUX_" RDS_DB_NAME=autoplus2 RDS_PORT=3306
-    - secure: fc0kUe9OPh/MqUlMDRHI/8YzeldfkDoCBPQ4bi209Djmzat/JhMQW1v4Yn7PGnCg7weWb6qNY2MLlFlLYa012ZMQbGQWOKgK0aKuNmTCfdjiz1p62cEGRotEHSH7PFo+8OWXrmsJoWleaSGDgDC5ml9q9ydsTgwznqa6cefuXJHTf2MLQklrapSpRjWajb74q4oAsC21DcYfwdKWtWz4QB0F/ijwPzKJXrBvNeUHhqOqbvj4vDpGa3SiqUWqJUX7Zgj6njKi8yMc3VLNKvC3qUf4Y1Q3GHJArwMbXcHtXCp7LZn7GtLXLY9D+ITs4Fu0NJV/MRnGo3HuhpSQj6PXFQ==
+    - secure: XkJCDQ4A5QVIG7Rs6vurNlYCCIbv/mEA9QJKH602NiGYk1y8DZnLgKvcALUf/vu++4nkFg8/PpbfwPyxzEOPFA/gudQjGCmCV9rcYd1s+uU6wNiMGJH6mEcLFf5RhzqgdxxOpx5ii0sQ0S88QvJG36BvgJapFm5KYE6rYau7Wlknn3zo8uVAO8W+DbNC4S2/1UKO9epiuF0FQNCfFdAZJaNAfNS+zwpOgPQZQlVxsM8nqKz5uZgkhFo4vQEEhZyZTwwlMVJonMkaH8m0KPZW+08cLw8+QLXUfEk4xnRTjlDOCr+EfcLJiXaT8D9xgesgpuJWMrj7zgDBPmIjf/jHZA==
 
 before_install:
   - if [ ! -e $EB_TOOLS ]; then wget -q -O /tmp/eb.zip https://s3.amazonaws.com/elasticbeanstalk/cli/$EB_VERSION.zip && mkdir -p $EB_TOOLS_DIR && unzip /tmp/eb.zip -d $EB_TOOLS_DIR; fi
