@@ -4,9 +4,7 @@ build_environment: Ubuntu 14.04
 language: php
 
 php:
-  - 5.5
   - 5.6
-  - hhvm
 
   # only build when certain Git branches are updated
 branches:
@@ -14,16 +12,37 @@ branches:
     - 4.2
 
 env:
-  - APP_ENV=testing
+  global:
+    - APP_ENV=testing
+    - EB_TOOLS_DIR=/tmp/eb_tools EB_VERSION=AWS-ElasticBeanstalk-CLI-2.6.3
+    - EB_TOOLS=$EB_TOOLS_DIR/$EB_VERSION
+    - RDS_HOSTNAME=127.0.0.1 RDS_USERNAME=ap2test RDS_PASSWORD="a.2XFRhwm8uUX_" RDS_DB_NAME=autoplus2 RDS_PORT=3306
+    - secure: fc0kUe9OPh/MqUlMDRHI/8YzeldfkDoCBPQ4bi209Djmzat/JhMQW1v4Yn7PGnCg7weWb6qNY2MLlFlLYa012ZMQbGQWOKgK0aKuNmTCfdjiz1p62cEGRotEHSH7PFo+8OWXrmsJoWleaSGDgDC5ml9q9ydsTgwznqa6cefuXJHTf2MLQklrapSpRjWajb74q4oAsC21DcYfwdKWtWz4QB0F/ijwPzKJXrBvNeUHhqOqbvj4vDpGa3SiqUWqJUX7Zgj6njKi8yMc3VLNKvC3qUf4Y1Q3GHJArwMbXcHtXCp7LZn7GtLXLY9D+ITs4Fu0NJV/MRnGo3HuhpSQj6PXFQ==
+
+before_install:
+  - if [ ! -e $EB_TOOLS ]; then wget -q -O /tmp/eb.zip https://s3.amazonaws.com/elasticbeanstalk/cli/$EB_VERSION.zip && mkdir -p $EB_TOOLS_DIR && unzip /tmp/eb.zip -d $EB_TOOLS_DIR; fi
+
 
 before_script:
+ - mkdir -p shippable/testresults
+ - mkdir -p shippable/codecoverage
+ - mkdir -p ~/.elasticbeanstalk
+ - echo 'AWSAccessKeyId=AKIAJTX54PQZQN575SQA' >> ~/.elasticbeanstalk/aws_credential_file
+ - echo 'AWSSecretKey='$AWS_SECRET_KEY >> ~/.elasticbeanstalk/aws_credential_file
+
  - sudo npm install -g gulp
- - npm install
- - composer install --no-interaction --dev
+ - sudo npm install
+ #- composer install --no-interaction --dev
 
 script:
- - phpunit
- - gulp
+ - mkdir -p .elasticbeanstalk
+ - cp awsbeanstalk .elasticbeanstalk/config
+ #- phpunit
+ #- gulp
+
+after_success :
+  - $EB_TOOLS/AWSDevTools/Linux/AWSDevTools-RepositorySetup.sh
+  - export PATH=$PATH:$EB_TOOLS/eb/linux/python2.7/ && virtualenv ve && source ve/bin/activate && pip install boto==2.14.0 && eb push
 
 notifications:
   email: true
